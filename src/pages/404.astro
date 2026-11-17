@@ -1,0 +1,23 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+---
+<Base lang="uk" title="Сторінку не знайдено — косметологічний центр «Жанві»" description="Такої сторінки немає. Поверніться на головну центру «Жанві» у Львові.">
+  <Header slot="header" home="/" />
+  <section class="nf on-field">
+    <div class="container">
+      <h1>Такої сторінки немає</h1>
+      <p>Можливо, адресу змінено. На головній є послуги, філії й онлайн-запис.</p>
+      <a class="btn" href="/">На головну</a>
+    </div>
+  </section>
+  <Footer slot="footer" />
+</Base>
+
+<style>
+  .nf { padding-block: var(--section-y-l); }
+  .nf h1 { font-size: var(--text-display); max-width: 14ch; text-wrap: balance; }
+  .nf p { margin-top: var(--space-md); max-width: 40ch; color: var(--color-on-field-muted); font-size: var(--text-lead); }
+  .nf .btn { margin-top: var(--space-lg); }
+</style>

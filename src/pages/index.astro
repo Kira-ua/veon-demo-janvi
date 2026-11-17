@@ -1,0 +1,49 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Services from "../components/Services.astro";
+import About from "../components/About.astro";
+import Booking from "../components/Booking.astro";
+import Branches from "../components/Branches.astro";
+import Footer from "../components/Footer.astro";
+import ContactBar from "../components/ContactBar.astro";
+import { branches, socials } from "../data/site";
+
+// H1: exactly the text of the veon-concept block in design/concept.md
+const H1 = "Косметологічний центр «Жанві» у Львові — з 2008 року";
+const title = "Косметологічний центр Жанві у Львові — 3 філії, онлайн-запис";
+const description = "Естетична, ін'єкційна, лазерна косметологія і дерматологія у Львові з 2008 року. Філії на Личаківській, Городоцькій і Замарстинівській. Онлайн-запис.";
+
+// Structured data from client.json facts only (addresses, phones, hours, socials).
+const ld = {
+  "@context": "https://schema.org",
+  "@type": "MedicalClinic",
+  name: "Косметологічний центр «Жанві»",
+  foundingDate: "2008",
+  address: branches.map((b) => ({ "@type": "PostalAddress", streetAddress: `вул. ${b.street}`, addressLocality: "Львів", addressCountry: "UA" })),
+  sameAs: socials.map((s) => s.url),
+  department: branches.map((b) => ({
+    "@type": "MedicalClinic",
+    name: `«Жанві», вул. ${b.street}`,
+    telephone: b.tel,
+    email: b.email,
+    address: { "@type": "PostalAddress", streetAddress: `вул. ${b.street}`, addressLocality: "Львів", addressCountry: "UA" },
+    openingHoursSpecification: [
+      { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], opens: "10:00", closes: "19:00" },
+      ...(b.sundayOpen ? [{ "@type": "OpeningHoursSpecification", dayOfWeek: "Sunday", opens: "10:00", closes: "16:00" }] : []),
+    ],
+  })),
+};
+---
+<Base lang="uk" title={title} description={description}>
+  <script type="application/ld+json" data-rec="SEO-R09" slot="head" set:html={JSON.stringify(ld)} />
+  <Header slot="header" />
+  <Hero h1={H1} />
+  <Services />
+  <About />
+  <Booking />
+  <Branches />
+  <Footer slot="footer" />
+  <ContactBar slot="footer" />
+</Base>

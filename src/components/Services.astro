@@ -1,0 +1,139 @@
+---
+import Section from "./Section.astro";
+import FutureLink from "./FutureLink.astro";
+import { BOOKING_URL, FUTURE_NOTE, concerns, directions } from "../data/site";
+---
+<Section id="services" rec="UX-R03,UX-R04" class="services">
+  <div class="container">
+    <div class="services__head">
+      <h2 data-reveal>Процедури за&nbsp;п'ятьма напрямами</h2>
+      <nav class="concerns" aria-labelledby="concerns-label">
+        <p class="concerns__label" id="concerns-label">Я хочу позбутися:</p>
+        <ul class="concerns__list">
+          {concerns.map((c) => (
+            <li><a class="concerns__link mark" href={`#${c.target}`} data-concern>{c.word}</a></li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+
+    <div class="dirs">
+      {directions.map((d) => (
+        <article class="dir" id={`dir-${d.id}`} data-dir aria-labelledby={`dir-${d.id}-title`}>
+          <div class="dir__head">
+            <h3 class="dir__title" id={`dir-${d.id}-title`}>
+              <span class="dir__name">{d.name}</span>
+              <button class="dir__toggle" type="button" aria-expanded="true" aria-controls={`dir-${d.id}-panel`} data-dir-toggle>
+                <span>{d.name}</span>
+                <svg class="dir__icon" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 7.5l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" /></svg>
+              </button>
+            </h3>
+            <p class="dir__scope">{d.scope}</p>
+            <p class="dir__book dir__book--head">
+              <a class="link" href={BOOKING_URL} target="_blank" rel="noopener">Записатися онлайн<span class="visually-hidden"> (відкриється в новій вкладці)</span></a>
+            </p>
+          </div>
+          <div class="dir__panel" id={`dir-${d.id}-panel`}>
+            <ul class="dir__list">
+              {d.procedures.map((p) => (
+                <li id={p.id}>
+                  <FutureLink note={FUTURE_NOTE} class="dir__proc mark" {...(p.id ? { "data-procedure": "" } : {})}>{p.name}</FutureLink>
+                </li>
+              ))}
+            </ul>
+            <p class="dir__book dir__book--panel">
+              <a class="link" href={BOOKING_URL} target="_blank" rel="noopener">Записатися онлайн<span class="visually-hidden"> (відкриється в новій вкладці)</span></a>
+            </p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</Section>
+
+<style>
+  :global(.services) { padding-block: var(--section-y) var(--section-y); }
+  .services__head { display: grid; gap: var(--space-lg); }
+  .services__head h2 { max-width: 16ch; text-wrap: balance; }
+  .concerns__label { font-size: var(--text-md); color: var(--color-muted); }
+  .concerns__list { display: grid; margin-top: var(--space-2xs); border-top: 1px solid var(--color-rule); }
+  .concerns__list li { border-bottom: 1px solid var(--color-rule); }
+  .concerns__link {
+    display: flex; align-items: center; min-height: var(--control-h);
+    font-family: var(--font-display); font-size: var(--text-title); letter-spacing: var(--tracking-display); line-height: 1.15;
+    color: var(--color-text); text-decoration: none;
+    transition: color var(--dur-micro) var(--ease-out);
+  }
+  .concerns__link:hover { color: var(--color-primary); }
+  .concerns__link:active { color: var(--color-primary-hover); }
+  .concerns__list li { display: flex; }
+
+  .dirs { margin-top: var(--space-2xl); border-top: var(--border) solid var(--color-text); }
+  .dir { border-bottom: 1px solid var(--color-rule); }
+  .dir__head { padding-block: var(--space-md) var(--space-xs); }
+  .dir__toggle { display: none; }
+  .dir__scope { margin-top: var(--space-3xs); color: var(--color-muted); font-size: var(--text-sm); }
+  .dir__panel { padding-block: var(--space-xs) var(--space-lg); }
+  .dir__list { display: grid; gap: var(--space-3xs); }
+  .dir__list li { display: flex; }
+  .dir__list :global(.dir__proc) {
+    min-height: var(--control-h-s);
+    color: var(--color-text);
+    white-space: normal;
+  }
+  .dir__list :global(.dir__proc:hover) { color: var(--color-primary); }
+  .dir__book { margin-top: var(--space-sm); }
+  .dir__book--head { display: none; }
+  .dir__book .link { display: inline-flex; align-items: center; min-height: var(--control-h-s); }
+
+  /* Phone, with script: an accordion of directions */
+  @media (max-width: 59.99rem) {
+    :global(.js) .dir__name { display: none; }
+    :global(.js) .dir__toggle {
+      display: flex; width: 100%; align-items: center; justify-content: space-between; gap: var(--space-sm);
+      min-height: var(--control-h);
+      padding: 0; border: 0; background: transparent; cursor: pointer; text-align: start;
+      font-family: var(--font-display); font-size: inherit; letter-spacing: inherit; line-height: inherit; color: var(--color-text);
+    }
+    :global(.js) .dir__toggle:hover { color: var(--color-primary); }
+    :global(.js) .dir__toggle:active { color: var(--color-primary-hover); }
+    .dir__icon { flex: none; transition: transform var(--dur-short) var(--ease-out); }
+    .dir[data-collapsed] .dir__icon { transform: rotate(-90deg); }
+    .dir[data-collapsed] .dir__panel { display: none; }
+    .dir:not([data-collapsed]) .dir__panel { animation: panel-in var(--dur-short) var(--ease-out); }
+  }
+
+  @media (min-width: 40rem) {
+    .concerns__list { display: flex; flex-wrap: wrap; gap: var(--space-2xs) var(--space-lg); border: 0; }
+    .concerns__list li { border: 0; }
+    .dir__list { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gap-columns); }
+  }
+
+  @media (min-width: 60rem) {
+    .services__head { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap-columns); align-items: end; }
+    .services__head h2 { grid-column: 1 / span 5; }
+    .concerns { display: none; }
+    .services__head { align-items: start; }
+    .services__head h2 { max-width: 22ch; }
+    .dirs { margin-top: var(--space-3xl); }
+    .dir {
+      display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap-columns);
+      padding-block: var(--space-xl);
+    }
+    .dir__head { grid-column: 1 / span 5; padding-block: 0; align-self: start; position: sticky; top: calc(var(--header-h) + var(--space-lg)); }
+    .dir__title { font-size: var(--text-subsection); }
+    .dir__scope { margin-top: var(--space-xs); font-size: var(--text-md); max-width: 30ch; }
+    .dir__panel { grid-column: 7 / span 6; padding-block: var(--space-2xs) 0; }
+    .dir__book--head { display: block; }
+    .dir__book--panel { display: none; }
+    .dir { padding-block: var(--space-lg); }
+    .dir__list { gap: 0; }
+    .dir__list :global(.dir__proc) { font-size: var(--text-md); min-height: var(--control-h-s); }
+  }
+
+  @keyframes panel-in { from { opacity: 0; transform: translateY(var(--rise)); } }
+  @media (prefers-reduced-motion: reduce) {
+    .dir:not([data-collapsed]) .dir__panel { animation: none; }
+    .dir__icon { transition: none; }
+  }
+</style>

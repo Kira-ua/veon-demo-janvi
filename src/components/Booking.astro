@@ -1,0 +1,58 @@
+---
+import Section from "./Section.astro";
+import FutureLink from "./FutureLink.astro";
+import { BOOKING_URL, TELEGRAM_URL, VIBER_URL, FUTURE_NOTE } from "../data/site";
+const newTab = " (відкриється в новій вкладці)";
+---
+<Section id="booking" class="booking on-field">
+  <div class="container">
+    <h2 class="booking__title" data-reveal>Три способи записатися</h2>
+    <ul class="ways">
+      <li class="way">
+        <h3>Онлайн, у&nbsp;зручний час</h3>
+        <p>Оберіть процедуру й вільний час у&nbsp;системі онлайн-запису.</p>
+        <div class="way__actions">
+          <a class="btn" href={BOOKING_URL} target="_blank" rel="noopener">Онлайн-запис<span class="visually-hidden">{newTab}</span></a>
+        </div>
+      </li>
+      <li class="way">
+        <h3>Написати</h3>
+        <p>Запитайте про процедуру, вартість чи вільний час.</p>
+        <div class="way__actions">
+          <a class="btn btn--line" href={TELEGRAM_URL} target="_blank" rel="noopener">Telegram<span class="visually-hidden">{newTab}</span></a>
+        </div>
+      </li>
+      <li class="way">
+        <h3>Подзвонити у&nbsp;філію</h3>
+        <p>Номер і години роботи кожної філії зібрані нижче.</p>
+        <div class="way__actions">
+          <a class="btn btn--line" href="#branches">Телефони філій</a>
+        </div>
+      </li>
+    </ul>
+    <p class="booking__price">
+      Актуальні ціни — на&nbsp;<FutureLink note={FUTURE_NOTE}>сторінці цін</FutureLink>. Вартість можна уточнити в&nbsp;Telegram або телефоном філії.
+    </p>
+  </div>
+</Section>
+
+<style>
+  :global(.booking) { padding-block: var(--section-y); }
+  .booking__title { max-width: 16ch; }
+  .ways { display: grid; gap: var(--space-xl); margin-top: var(--space-xl); }
+  .way { display: grid; gap: var(--space-xs); align-content: start; padding-top: var(--space-md); border-top: 1px solid var(--color-rule-field); }
+  .way p { color: var(--color-on-field-muted); max-width: 34ch; }
+  .way__actions { display: flex; flex-wrap: wrap; gap: var(--space-xs); margin-top: var(--space-xs); }
+  .booking__price {
+    margin-top: var(--space-2xl); padding-top: var(--space-md);
+    border-top: 1px solid var(--color-rule-field);
+    color: var(--color-on-field-muted); max-width: 70ch;
+  }
+
+  @media (min-width: 60rem) {
+    .ways { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-columns); margin-top: var(--space-2xl); }
+    .way { grid-template-rows: auto 1fr auto; padding: var(--space-md) var(--space-lg) 0 0; border-top: 0; border-inline-start: 1px solid var(--color-rule-field); padding-inline-start: var(--space-lg); }
+    .way:first-child { border-inline-start: 0; padding-inline-start: 0; }
+    .way__actions { margin-top: var(--space-md); }
+  }
+</style>

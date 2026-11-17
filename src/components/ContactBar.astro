@@ -1,0 +1,81 @@
+---
+// Phone only: one bottom bar after the first screen (instead of floating round buttons) and the «Зв'язатися» sheet.
+import { BOOKING_URL, TELEGRAM_URL, VIBER_URL, branches } from "../data/site";
+const newTab = " (відкриється в новій вкладці)";
+---
+<div class="bar" data-bar data-rec="UX-R02">
+  <a class="btn bar__btn" href={BOOKING_URL} target="_blank" rel="noopener">Онлайн-запис<span class="visually-hidden">{newTab}</span></a>
+  <a class="btn btn--line bar__btn" href="#booking" data-contact-open>Зв'язатися</a>
+</div>
+
+<dialog id="contact" class="sheet" aria-labelledby="contact-title">
+  <div class="sheet__head">
+    <p class="sheet__title" id="contact-title">Зв'язатися з центром</p>
+    <button class="sheet__close" type="button" data-dialog-close>Закрити</button>
+  </div>
+  <p class="sheet__group" id="sheet-call">Подзвонити у філію</p>
+  <ul class="sheet__list" aria-labelledby="sheet-call">
+    {branches.map((b) => (
+      <li><a class="sheet__row" href={`tel:${b.tel}`}><span>{b.street}</span><span class="visually-hidden">, телефон </span> <span class="tabular">{b.phone}</span></a></li>
+    ))}
+  </ul>
+  <p class="sheet__group" id="sheet-write">Написати</p>
+  <ul class="sheet__list" aria-labelledby="sheet-write">
+    <li><a class="sheet__row" href={TELEGRAM_URL} target="_blank" rel="noopener"><span>Telegram</span><span class="sheet__hint">бот центру<span class="visually-hidden">{newTab}</span></span></a></li>
+  </ul>
+</dialog>
+
+<style>
+  .bar { display: none; }
+  @media (max-width: 59.99rem) {
+    :global(body) { padding-bottom: calc(var(--control-h) + 2 * var(--space-xs) + env(safe-area-inset-bottom, 0px)); }
+    .bar {
+      position: fixed; inset-inline: 0; bottom: 0; z-index: var(--z-bar);
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2xs);
+      padding: var(--space-xs) var(--gutter) calc(var(--space-xs) + env(safe-area-inset-bottom, 0px));
+      background: var(--color-bg);
+      border-top: 1px solid var(--color-rule);
+      transition: transform var(--dur-short) var(--ease-out), visibility 0s linear 0s;
+    }
+    .bar__btn { width: 100%; padding-inline: var(--space-xs); }
+  }
+
+  .sheet {
+    position: fixed; inset: auto 0 0 0;
+    width: 100%; max-width: 40rem; max-height: 90dvh;
+    margin: 0 auto; padding: var(--space-sm) var(--gutter) calc(var(--space-lg) + env(safe-area-inset-bottom, 0px));
+    border: 0; border-radius: var(--space-sm) var(--space-sm) 0 0;
+    background: var(--color-bg); color: var(--color-text);
+    overscroll-behavior: contain;
+  }
+  .sheet[open] { animation: sheet-in var(--dur-sheet) var(--ease-out); }
+  .sheet::backdrop { background: var(--color-scrim); }
+  .sheet__head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-sm); }
+  .sheet__title { font-family: var(--font-display); font-size: var(--text-title); line-height: var(--leading-tight); letter-spacing: var(--tracking-display); }
+  .sheet__close {
+    min-height: var(--control-h-s); padding: 0 var(--space-sm);
+    border: var(--border) solid var(--color-rule); border-radius: var(--radius);
+    background: transparent; color: var(--color-text); font-weight: 600; cursor: pointer;
+    transition: background-color var(--dur-micro) var(--ease-out);
+  }
+  .sheet__close:hover { background: var(--color-surface-2); }
+  .sheet__close:active { background: var(--color-rule); }
+  .sheet__group { margin-top: var(--space-md); font-size: var(--text-sm); color: var(--color-muted); }
+  .sheet__list { margin-top: var(--space-2xs); border-top: 1px solid var(--color-rule); }
+  .sheet__list li { border-bottom: 1px solid var(--color-rule); }
+  .sheet__row {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3xs) var(--space-sm);
+    min-height: var(--control-h); padding-block: var(--space-2xs);
+    color: var(--color-text); text-decoration: none; font-weight: 600;
+    transition: color var(--dur-micro) var(--ease-out);
+  }
+  .sheet__row:hover { color: var(--color-primary); }
+  .sheet__row:active { color: var(--color-primary-hover); }
+  .sheet__row span:first-child { font-weight: 400; }
+  .sheet__hint { color: var(--color-muted); font-weight: 400; }
+  @keyframes sheet-in { from { transform: translateY(100%); } }
+  @media (prefers-reduced-motion: reduce) {
+    .sheet[open] { animation: none; }
+    .bar { transition: none; }
+  }
+</style>

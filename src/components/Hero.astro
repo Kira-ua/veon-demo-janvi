@@ -1,0 +1,122 @@
+---
+import Section from "./Section.astro";
+import { BOOKING_URL, branches, concerns } from "../data/site";
+
+interface Props { h1: string; }
+const { h1 } = Astro.props;
+---
+<Section id="hero" rec="UX-R01" class="hero on-field">
+  <div class="container hero__grid">
+    <div class="hero__main">
+      <h1 class="hero__title" data-rec="SEO-R04">{h1}</h1>
+      <p class="hero__lede">Естетична, ін'єкційна, лазерна косметологія і&nbsp;дерматологія.</p>
+      <div class="hero__actions">
+        <a class="btn hero__cta" href={BOOKING_URL} target="_blank" rel="noopener">Онлайн-запис<span class="visually-hidden"> (відкриється в новій вкладці)</span></a>
+        <a class="btn btn--line hero__cta" href="#booking" data-contact-open>Зв'язатися</a>
+      </div>
+    </div>
+
+    <nav class="hero__index" aria-labelledby="hero-index-label" data-rec="UX-R03">
+      <p class="hero__index-label" id="hero-index-label">Що вас турбує?</p>
+      <ul class="hero__index-list">
+        {concerns.map((c) => (
+          <li><a class="hero__concern mark" href={`#${c.target}`} data-concern>{c.word}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <ul class="hero__streets" aria-label="Філії у Львові">
+      {branches.map((b) => (
+        <li class="hero__street">
+          <a class="hero__street-link mark" href={`#branch-${b.id}`}>{b.street}</a>
+          <span class="hero__hours tabular"><span>Пн–Сб {b.weekdays}</span> <span>Нд {b.sunday}</span></span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Section>
+
+<style>
+  :global(.hero) { padding-block: var(--space-lg) var(--space-lg); }
+  .hero__grid { display: grid; gap: var(--space-xl); }
+  .hero__title {
+    font-size: var(--text-display);
+    line-height: 1.04;
+    max-width: 14ch;
+    text-wrap: balance;
+    animation: hero-rise var(--dur-hero) var(--ease-out) both;
+  }
+  .hero__lede {
+    margin-top: var(--space-md);
+    max-width: 34ch;
+    font-size: var(--text-lead);
+    line-height: 1.4;
+    color: var(--color-on-field-muted);
+    animation: hero-appear var(--dur-hero) var(--ease-out) 60ms both;
+  }
+  .hero__actions {
+    display: grid; gap: var(--space-xs);
+    margin-top: var(--space-lg);
+    animation: hero-appear var(--dur-hero) var(--ease-out) 120ms both;
+  }
+  .hero__cta { width: 100%; white-space: nowrap; }
+
+  /* Index of concerns: desktop only; on a phone the services block below opens with the same index */
+  .hero__index { display: none; }
+
+  .hero__streets {
+    display: grid; gap: var(--space-sm);
+    border-top: 1px solid var(--color-rule-field);
+    padding-top: var(--space-md);
+    animation: hero-appear var(--dur-hero) var(--ease-out) 180ms both;
+  }
+  .hero__street { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--space-3xs) var(--space-sm); }
+  .hero__street-link {
+    display: inline-flex; align-items: center; min-height: var(--control-h-s);
+    font-family: var(--font-display); font-size: var(--text-street); letter-spacing: var(--tracking-display);
+    color: var(--color-on-field); text-decoration: none;
+  }
+  .hero__hours { display: flex; flex-wrap: wrap; gap: 0 var(--space-xs); font-size: var(--text-sm); line-height: 1.45; color: var(--color-on-field-muted); }
+
+  @media (min-width: 40rem) {
+    :global(.hero) { padding-block: var(--space-2xl) var(--space-xl); }
+    .hero__actions { display: flex; flex-wrap: wrap; }
+    .hero__cta { width: auto; min-width: 12rem; }
+    .hero__streets { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-columns); }
+    .hero__street { flex-direction: column; justify-content: flex-start; }
+    .hero__hours { flex-direction: column; }
+  }
+
+  @media (min-width: 60rem) {
+    :global(.hero) { padding-block: 0; }
+    .hero__grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      grid-template-rows: 1fr auto;
+      column-gap: var(--gap-columns);
+      row-gap: 0;
+      min-height: max(36rem, calc(100svh - var(--header-h)));
+    }
+    .hero__main { grid-column: 1 / span 7; align-self: center; padding-block: var(--space-2xl) var(--space-xl); }
+    .hero__index {
+      display: block; grid-column: 9 / span 4; align-self: center;
+      padding-block: var(--space-2xl) var(--space-xl);
+      animation: hero-appear var(--dur-hero) var(--ease-out) 180ms both;
+    }
+    .hero__index-label { font-size: var(--text-md); color: var(--color-on-field-muted); }
+    .hero__index-list { display: grid; gap: var(--space-3xs); margin-top: var(--space-sm); }
+    .hero__concern {
+      display: inline-flex; align-items: center; min-height: var(--control-h);
+      font-family: var(--font-display); font-size: var(--text-title); line-height: 1.15; letter-spacing: var(--tracking-display);
+      color: var(--color-on-field); text-decoration: none;
+    }
+    .hero__streets { grid-column: 1 / -1; padding-block: var(--space-md) var(--space-xl); animation-delay: 240ms; }
+    .hero__street { padding-inline-end: var(--space-md); }
+    .hero__street + .hero__street { border-inline-start: 1px solid var(--color-rule-field); padding-inline-start: var(--space-md); }
+  }
+
+  @keyframes hero-rise { from { transform: translateY(var(--rise)); } }
+  @keyframes hero-appear { from { opacity: 0; transform: translateY(var(--rise)); } }
+  @media (prefers-reduced-motion: reduce) {
+    .hero__title, .hero__lede, .hero__actions, .hero__index, .hero__streets { animation: none; }
+  }
+</style>

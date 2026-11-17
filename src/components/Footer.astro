@@ -1,0 +1,73 @@
+---
+import Logo from "./Logo.astro";
+import FutureLink from "./FutureLink.astro";
+import { FUTURE_NOTE, branches, socials } from "../data/site";
+const year = 2026;
+const newTab = " (відкриється в новій вкладці)";
+---
+<footer class="site-footer">
+  <div class="container site-footer__grid">
+    <div class="site-footer__brand">
+      <Logo lazy />
+      <p>Косметологічний центр «Жанві», Львів</p>
+      <p class="site-footer__copy tabular">© 2008–{year}</p>
+    </div>
+    <nav class="site-footer__col" aria-labelledby="f-phones">
+      <p class="site-footer__label" id="f-phones">Телефони філій</p>
+      <ul>
+        {branches.map((b) => (
+          <li><a class="site-footer__phone" href={`tel:${b.tel}`}><span>{b.short}</span> <span class="tabular">{b.phone}</span></a></li>
+        ))}
+      </ul>
+    </nav>
+    <nav class="site-footer__col" aria-labelledby="f-social" data-rec="S-R007">
+      <p class="site-footer__label" id="f-social">Соцмережі</p>
+      <ul>
+        {socials.map((s) => (
+          <li><a class="site-footer__link" href={s.url} target="_blank" rel="noopener">{s.name}<span class="visually-hidden">{newTab}</span></a></li>
+        ))}
+      </ul>
+    </nav>
+    <nav class="site-footer__col" aria-labelledby="f-pages">
+      <p class="site-footer__label" id="f-pages">Розділи</p>
+      <ul>
+        <li><FutureLink note={FUTURE_NOTE}>Ціни</FutureLink></li>
+        <li><FutureLink note={FUTURE_NOTE}>Акції</FutureLink></li>
+        <li><FutureLink note={FUTURE_NOTE}>Статті</FutureLink></li>
+        <li><FutureLink note={FUTURE_NOTE}>Політика конфіденційності</FutureLink></li>
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .site-footer { background: var(--color-surface-2); padding-block: var(--space-2xl) var(--space-xl); font-size: var(--text-sm); }
+  .site-footer__grid { display: grid; gap: var(--space-xl); }
+  .site-footer__brand { display: grid; gap: var(--space-2xs); justify-items: start; }
+  .site-footer__brand :global(.logo img) { mix-blend-mode: multiply; }
+  .site-footer__copy { color: var(--color-muted); }
+  .site-footer__label { color: var(--color-muted); }
+  .site-footer__col ul { display: grid; gap: var(--space-3xs); margin-top: var(--space-2xs); }
+  .site-footer__phone, .site-footer__link {
+    display: inline-flex; flex-wrap: wrap; gap: 0 var(--space-xs); align-items: center; min-height: var(--control-h-s);
+    color: var(--color-text); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em;
+    transition: color var(--dur-micro) var(--ease-out);
+  }
+  .site-footer__phone { text-decoration: none; }
+  .site-footer__phone span:first-child { color: var(--color-muted); min-width: 9.5em; }
+  .site-footer__phone:hover, .site-footer__link:hover { color: var(--color-primary); }
+  .site-footer__phone:active, .site-footer__link:active { color: var(--color-primary-hover); }
+  .site-footer__col :global(.future-link) { min-height: var(--control-h-s); }
+
+  @media (min-width: 40rem) {
+    .site-footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (min-width: 60rem) {
+    .site-footer { padding-block: var(--space-3xl) var(--space-2xl); }
+    .site-footer__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap-columns); }
+    .site-footer__brand { grid-column: 1 / span 3; }
+    .site-footer__col:nth-of-type(1) { grid-column: 4 / span 4; }
+    .site-footer__col:nth-of-type(2) { grid-column: 8 / span 2; }
+    .site-footer__col:nth-of-type(3) { grid-column: 10 / span 3; }
+  }
+</style>

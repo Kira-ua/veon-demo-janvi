@@ -1,0 +1,64 @@
+---
+import Section from "./Section.astro";
+import FutureLink from "./FutureLink.astro";
+import { FUTURE_NOTE } from "../data/site";
+---
+<Section id="about" rec="UX-R05" class="about">
+  <div class="container about__grid">
+    <h2 class="about__title" data-reveal>Косметологія поруч із&nbsp;дерматологією</h2>
+    <figure class="about__year">
+      <p class="about__numeral tabular">2008</p>
+      <figcaption>Рік, з якого працює центр «Жанві»</figcaption>
+    </figure>
+    <ul class="about__facts">
+      <li>
+        <h3>Дерматологічні процедури — за&nbsp;призначенням лікаря</h3>
+        <p>Консультація дерматолога, видалення новоутворень і папілом, лікування оніхомікозу лазером.</p>
+      </li>
+      <li>
+        <h3>Пікосекундний Quasar TL-700 Neo і&nbsp;Nd:YAG</h3>
+        <p>Лазери, якими в центрі видаляють татуювання.</p>
+      </li>
+      <li>
+        <h3>Три філії у Львові</h3>
+        <p>У кожної свій телефон і графік роботи.</p>
+      </li>
+    </ul>
+    <p class="about__more"><FutureLink note={FUTURE_NOTE}>Більше про центр</FutureLink></p>
+  </div>
+</Section>
+
+<style>
+  :global(.about) { background: var(--color-surface-2); padding-block: var(--section-y-l); }
+  .about__grid { display: grid; gap: var(--space-xl); }
+  .about__title { max-width: 16ch; }
+  .about__year { margin: 0; }
+  .about__numeral {
+    font-family: var(--font-display); font-size: var(--text-numeral); line-height: 0.9; letter-spacing: var(--tracking-display);
+    color: var(--color-primary);
+  }
+  .about__year figcaption { margin-top: var(--space-sm); font-size: var(--text-sm); color: var(--color-muted); }
+  .about__facts { display: grid; gap: var(--space-lg); }
+  .about__facts li { display: grid; gap: var(--space-2xs); padding-top: var(--space-md); border-top: 1px solid var(--color-rule); }
+  .about__facts h3 { max-width: 22ch; }
+  .about__facts p { max-width: 46ch; color: var(--color-muted); }
+  .about__more :global(.future-link) { min-height: var(--control-h-s); }
+
+  @media (min-width: 60rem) {
+    .about__grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      grid-template-areas:
+        "title title title title title . facts facts facts facts facts facts"
+        "year year year year year . facts facts facts facts facts facts"
+        "year year year year year . more more more more more more";
+      column-gap: var(--gap-columns);
+      row-gap: var(--space-xl);
+      align-items: start;
+      grid-template-rows: auto 1fr auto;
+    }
+    .about__title { grid-area: title; }
+    .about__year { grid-area: year; }
+    .about__facts { grid-area: facts; gap: var(--space-xl); }
+    .about__more { grid-area: more; }
+  }
+</style>
