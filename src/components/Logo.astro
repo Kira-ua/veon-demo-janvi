@@ -2,11 +2,12 @@
 // The client's own logo (logo_ua.png from the current site, uploads 2022/09), unchanged. Leads to the top of this page.
 interface Props { class?: string; lazy?: boolean; }
 const { class: cls, lazy = false } = Astro.props;
+const B = import.meta.env.BASE_URL.replace(/\/?$/, "/");
 ---
 <a class:list={["logo", cls]} href="#top" aria-label="Косметологічний центр «Жанві», на початок сторінки">
   <picture>
-    <source type="image/webp" srcset="/img/janvi-logo-200.webp 200w, /img/janvi-logo-400.webp 400w" sizes="(min-width: 60rem) 160px, 128px" />
-    <img src="/img/janvi-logo-400.png" srcset="/img/janvi-logo-200.png 200w, /img/janvi-logo-400.png 400w" sizes="(min-width: 60rem) 160px, 128px" width="400" height="102" alt="JANVI, косметологічний центр" decoding="async" loading={lazy ? "lazy" : "eager"} />
+    <source type="image/webp" srcset={`${B}img/janvi-logo-200.webp 200w, ${B}img/janvi-logo-400.webp 400w`} sizes="(min-width: 60rem) 160px, 128px" />
+    <img src={`${B}img/janvi-logo-400.png`} srcset={`${B}img/janvi-logo-200.png 200w, ${B}img/janvi-logo-400.png 400w`} sizes="(min-width: 60rem) 160px, 128px" width="400" height="102" alt="JANVI, косметологічний центр" decoding="async" loading={lazy ? "lazy" : "eager"} />
   </picture>
 </a>
 
